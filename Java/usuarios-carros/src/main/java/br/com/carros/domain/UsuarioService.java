@@ -3,6 +3,7 @@ package br.com.carros.domain;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,17 @@ import br.com.carros.domain.exception.NegocioException;
 import br.com.carros.domain.exception.UsuarioNaoEncontradoException;
 import br.com.carros.domain.model.Usuario;
 import br.com.carros.domain.repository.UsuarioRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	private static final String MSG_USUARIO_EM_USO = "Usuario de código %d não pode ser removido, pois está em uso";
 	
@@ -31,15 +37,17 @@ public class UsuarioService {
 		Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
 		
 		if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
+			log.info("Usuário tentou salvar um usuário com e-mail já existente.");
 			throw new NegocioException(
-					"Email already exists", ConstantesComum.ERROR_CODE_EMAIL_JA_EXISTENTE);
+					messageSource.getMessage("email.ja.existe", null, null), ConstantesComum.ERROR_CODE_EMAIL_JA_EXISTENTE);
 		}
 		
 		Optional<Usuario> usuarioExistenteLogin = usuarioRepository.findByLogin(usuario.getLogin());
 		
 		if (usuarioExistenteLogin.isPresent() && !usuarioExistenteLogin.get().equals(usuario)) {
+			log.info("Usuário tentou salvar um usuário com login já existente.");
 			throw new NegocioException(
-					"Login already exists", ConstantesComum.ERROR_CODE_LOGIN_JA_EXISTENTE);
+					messageSource.getMessage("login.ja.existe", null, null), ConstantesComum.ERROR_CODE_LOGIN_JA_EXISTENTE);
 		}
 		
 		return usuarioRepository.save(usuario);
@@ -52,6 +60,7 @@ public class UsuarioService {
 		try {
 			usuarioRepository.deleteById(cozinhaId);
 			usuarioRepository.flush();
+			log.info("Usuário excluido.");
 		} catch (EmptyResultDataAccessException e) {
 			throw new UsuarioNaoEncontradoException(cozinhaId);					
 		} catch (DataIntegrityViolationException e) {
@@ -73,10 +82,13 @@ public class UsuarioService {
 		Usuario usuario = this.buscarOuFalhar(usuarioId);
 		
 		if (usuario.senhaNaoCoincideCom(senhaAtual)) {
-            throw new NegocioException("Senha atual informada não coincide com a senha do usuário.");
+			log.info("Senha atual não coincide.");
+            throw new NegocioException(messageSource.getMessage("senha.atual.nao.coincide.com.senha.usuario", null, null));
         } 
 		
 		usuario.setPassword(novaSenha);
+		
+		usuarioRepository.save(usuario);
 		
 	}
 	

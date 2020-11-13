@@ -1,6 +1,8 @@
-package br.com.carros.api;
+package br.com.carros.api.controller;
 
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.carros.api.model.UsuarioInputModel;
-import br.com.carros.api.model.UsuarioInputModelSemSenha;
+import br.com.carros.api.dto.UsuarioInputDTO;
+import br.com.carros.api.dto.UsuarioInputDTOSemSenha;
+import br.com.carros.api.dto.UsuarioSenhaInput;
 import br.com.carros.assembler.UsuarioAssembler;
 import br.com.carros.assembler.UsuarioInputDisassembler;
 import br.com.carros.domain.UsuarioDTO;
@@ -46,11 +49,12 @@ public class UsuarioController {
 	
 	@GetMapping("/{usuarioId}")
 	public UsuarioDTO buscar(@PathVariable Long usuarioId) {
-		return usuarioAssembler.toModel(usuarioService.buscaOuFalhar(usuarioId));
+		return usuarioAssembler.toModel(usuarioService.buscarOuFalhar(usuarioId));
 	}
 	
 	@PostMapping()
-	public UsuarioDTO adicionar(@RequestBody UsuarioInputModel usuarioInput) {
+	@ResponseStatus(HttpStatus.CREATED)
+	public UsuarioDTO adicionar(@RequestBody UsuarioInputDTO usuarioInput) {
 		
 		Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
 		
@@ -59,9 +63,9 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/{usuarioId}")
-	public UsuarioDTO atualizar(@RequestBody UsuarioInputModelSemSenha usuarioInput, @PathVariable Long usuarioId) {
+	public UsuarioDTO atualizar(@RequestBody UsuarioInputDTOSemSenha usuarioInput, @PathVariable Long usuarioId) {
 		
-		Usuario usuarioAtual = usuarioService.buscaOuFalhar(usuarioId);
+		Usuario usuarioAtual = usuarioService.buscarOuFalhar(usuarioId);
 		
 		usuarioInputDisassembler.copyToDomainObject(usuarioInput, usuarioAtual);
 		
@@ -74,6 +78,14 @@ public class UsuarioController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long usuarioId) {
 		usuarioService.excluir(usuarioId);
+	}
+	
+	@PutMapping("/{usuarioId}/senha")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid UsuarioSenhaInput usuarioSenhaInput) {
+		
+		usuarioService.alterarSenha(usuarioId, usuarioSenhaInput.getSenhaAtual(), usuarioSenhaInput.getNovaSenha());
+		
 	}
 	
 }

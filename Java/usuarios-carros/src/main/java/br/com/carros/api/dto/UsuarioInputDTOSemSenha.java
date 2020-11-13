@@ -1,4 +1,4 @@
-package br.com.carros.api.model;
+package br.com.carros.api.dto;
 
 import java.time.LocalDate;
 
@@ -6,15 +6,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
-public class UsuarioInputModel {
-
+@Getter
+public class UsuarioInputDTOSemSenha {
 	@NotBlank
 	private String firstName;
 	@NotBlank
@@ -23,11 +20,9 @@ public class UsuarioInputModel {
 	@Email
 	private String email;
 	@NotNull
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	private LocalDate birthday;
 	@NotBlank
 	private String login;
-	private String password;
 	@NotBlank
 	private String phone;
 }

@@ -1,4 +1,4 @@
-package br.com.carros.api;
+package br.com.carros.api.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

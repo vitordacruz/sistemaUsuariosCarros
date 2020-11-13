@@ -37,5 +37,13 @@ public class Usuario {
 	@NotBlank
 	private String phone;
 	
+    public boolean senhaCoincideCom(String senha) {
+        return getPassword().equals(senha);
+    }
+
+    public boolean senhaNaoCoincideCom(String senha) {
+        return !senhaCoincideCom(senha);
+    }
+	
 	
 }

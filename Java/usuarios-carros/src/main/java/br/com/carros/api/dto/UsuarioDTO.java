@@ -1,7 +1,9 @@
-package br.com.carros.domain;
+package br.com.carros.api.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import br.com.carros.domain.model.Carro;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,5 +18,6 @@ public class UsuarioDTO {
 	private LocalDate birthday;
 	private String login;
 	private String phone;
+	private List<Carro> cars;
 
 }

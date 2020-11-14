@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.carros.api.dto.UsuarioDTO;
 import br.com.carros.api.dto.UsuarioInputDTO;
 import br.com.carros.api.dto.UsuarioInputDTOSemSenha;
 import br.com.carros.api.dto.UsuarioSenhaInput;
 import br.com.carros.assembler.UsuarioAssembler;
 import br.com.carros.assembler.UsuarioInputDisassembler;
-import br.com.carros.domain.UsuarioDTO;
 import br.com.carros.domain.UsuarioService;
 import br.com.carros.domain.model.Usuario;
 import br.com.carros.domain.repository.UsuarioRepository;

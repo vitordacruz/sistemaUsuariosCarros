@@ -63,7 +63,7 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/{usuarioId}")
-	public UsuarioOutputDTO atualizar(@RequestBody @Valid UsuarioInputDTOSemSenha usuarioInput, @PathVariable Long usuarioId) {
+	public UsuarioOutputDTO atualizar(@RequestBody @Valid UsuarioInputDTO usuarioInput, @PathVariable Long usuarioId) {
 		
 		Usuario usuarioAtual = usuarioService.buscarOuFalhar(usuarioId);
 		

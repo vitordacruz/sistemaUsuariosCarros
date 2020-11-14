@@ -27,6 +27,7 @@ public class UsuarioInputDTO {
 	private LocalDate birthday;
 	@NotBlank
 	private String login;
+	@NotBlank
 	private String password;
 	@NotBlank
 	private String phone;

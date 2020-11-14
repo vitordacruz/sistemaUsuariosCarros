@@ -8,10 +8,10 @@ import br.com.carros.domain.repository.CustomRepositoryImpl;
 
 @SpringBootApplication
 @EnableJpaRepositories(repositoryBaseClass = CustomRepositoryImpl.class)
-public class UsuariosCarrosApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UsuariosCarrosApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }

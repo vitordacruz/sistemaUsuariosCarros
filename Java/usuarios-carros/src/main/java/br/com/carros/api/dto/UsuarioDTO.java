@@ -1,23 +1,41 @@
+/**
+ * 
+ */
 package br.com.carros.api.dto;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+/**
+ * @author Vitor B.
+ *
+ */
 @Getter
 @Setter
-public class UsuarioOutputDTO {
-	
+@ToString
+public class UsuarioDTO {
+
 	private Long id;
+
 	private String firstName;
+
 	private String lastName;
+
 	private String email;
+
 	private LocalDate birthday;
+
 	private String login;
+
 	private String phone;
-	private String  password;
-	private List<CarroOutputDTO> cars;
+
+	private LocalDateTime lastLogin;
+	
+	private Set<CarroOutputDTO> cars;
 
 }

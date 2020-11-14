@@ -1,5 +1,6 @@
 package br.com.carros.domain;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,9 @@ public class CarroService {
 		
 		carroRepository.detach(carro);
 		
-		Optional<Carro> usuarioExistente = carroRepository.findByLicensePlate(carro.getLicensePlate());
+		Optional<Carro> carroExistente = carroRepository.findByLicensePlate(carro.getLicensePlate());
 		
-		if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(carro)) {
+		if (carroExistente.isPresent() && !carroExistente.get().equals(carro)) {
 			log.info("Já existe um carro com essa placa");
 			throw new NegocioException(
 					messageSource.getMessage("placa.carro.ja.existe", null, null), ConstantesComum.ERROR_CODE_PLACA_CARRO_JA_EXISTE);
@@ -46,9 +47,20 @@ public class CarroService {
 		
 	}
 	
+	public boolean placaExiste(String placa, Long usuarioId) {
+		return carroRepository.placaExiste(placa, usuarioId);
+	}
+	
 	public Carro buscarOuFalhar(Long carroId) {
 		
 		return carroRepository.findById(carroId).orElseThrow(
+				() -> new UsuarioNaoEncontradoException(carroId));
+		
+	}
+	
+	public Carro buscarOuFalhar(Long carroId, String login) {
+		
+		return carroRepository.findOneByIdAndUsuarioLogin(carroId, login).orElseThrow(
 				() -> new UsuarioNaoEncontradoException(carroId));
 		
 	}
@@ -65,6 +77,10 @@ public class CarroService {
 			throw new EntidadeEmUsoException(
 						String.format(MSG_CARRO_EM_USO, carroId));
 		}
+	}
+	
+	public List<Carro> findAllByUsuarioLogin(String login) {
+		return carroRepository.findAllByUsuarioLogin(login);
 	}
 	
 }

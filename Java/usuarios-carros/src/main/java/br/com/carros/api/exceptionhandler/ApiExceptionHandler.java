@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 
+import br.com.carros.domain.exception.AuthorizationException;
 import br.com.carros.domain.exception.EntidadeNaoEncontradaException;
 import br.com.carros.domain.exception.NegocioException;
 import br.com.carros.util.ConstantesComum;
@@ -102,6 +103,20 @@ public class ApiExceptionHandler  extends ResponseEntityExceptionHandler {
 		
 		
 	}
+	
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<Object> handleAuthorizationException(Exception ex, WebRequest request) {
+	    HttpStatus status = HttpStatus.UNAUTHORIZED;		
+	    String detail = ex.getMessage();
+
+	    ex.printStackTrace();
+	    
+	    Problema problem = Problema.builder().message(detail)
+	    			.errorCode(ConstantesComum.ERROR_CODE_NAO_AUTORIZADO)
+				.build();
+
+	    return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+	}	
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {

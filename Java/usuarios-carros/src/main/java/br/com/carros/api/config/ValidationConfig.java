@@ -1,4 +1,4 @@
-package br.com.carros.api.controller;
+package br.com.carros.api.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

@@ -26,4 +26,8 @@ public class UsuarioInputDisassembler {
 		modelMapper.map(usuarioInput, usuario);
 	}
 	
+	public void  copyToDomainObject(UsuarioInputDTO usuarioInput, Usuario usuario) {
+		modelMapper.map(usuarioInput, usuario);
+	}
+	
 }

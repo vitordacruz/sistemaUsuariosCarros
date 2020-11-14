@@ -21,5 +21,7 @@ public class ConstantesComum {
 	public static final Integer ERROR_CODE_CAMPOS_INVALIDOS_2 = 9;
 	
 	public static final Integer ERROR_CODE_PLACA_CARRO_JA_EXISTE = 10;
+	
+	public static final Integer ERROR_CODE_NAO_AUTORIZADO = 11;
 
 }

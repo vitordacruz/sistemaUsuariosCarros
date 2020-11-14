@@ -1,10 +1,14 @@
 package br.com.carros.domain.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,13 +17,16 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Usuario {
+public class Usuario implements UserDetails {
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -40,7 +47,9 @@ public class Usuario {
 	@NotBlank
 	private String phone;
 	
-	@OneToMany(mappedBy = "usuario")	
+	private LocalDateTime lastLogin;
+	
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)	
 	private List<Carro> cars = new ArrayList<>();
 	
     public boolean senhaCoincideCom(String senha) {
@@ -50,6 +59,36 @@ public class Usuario {
     public boolean senhaNaoCoincideCom(String senha) {
         return !senhaCoincideCom(senha);
     }
+    
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return login;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 	
 	
 }

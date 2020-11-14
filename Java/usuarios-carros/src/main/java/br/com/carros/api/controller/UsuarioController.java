@@ -54,7 +54,7 @@ public class UsuarioController {
 	
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public UsuarioDTO adicionar(@RequestBody UsuarioInputDTO usuarioInput) {
+	public UsuarioDTO adicionar(@RequestBody @Valid UsuarioInputDTO usuarioInput) {
 		
 		Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
 		
@@ -63,7 +63,7 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/{usuarioId}")
-	public UsuarioDTO atualizar(@RequestBody UsuarioInputDTOSemSenha usuarioInput, @PathVariable Long usuarioId) {
+	public UsuarioDTO atualizar(@RequestBody @Valid UsuarioInputDTOSemSenha usuarioInput, @PathVariable Long usuarioId) {
 		
 		Usuario usuarioAtual = usuarioService.buscarOuFalhar(usuarioId);
 		

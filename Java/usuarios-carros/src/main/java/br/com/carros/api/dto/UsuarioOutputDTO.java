@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UsuarioDTO {
+public class UsuarioOutputDTO {
 	
 	private Long id;
 	private String firstName;

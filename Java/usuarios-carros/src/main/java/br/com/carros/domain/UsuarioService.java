@@ -9,12 +9,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.carros.ConstantesComum;
 import br.com.carros.domain.exception.EntidadeEmUsoException;
 import br.com.carros.domain.exception.NegocioException;
 import br.com.carros.domain.exception.UsuarioNaoEncontradoException;
 import br.com.carros.domain.model.Usuario;
 import br.com.carros.domain.repository.UsuarioRepository;
+import br.com.carros.util.ConstantesComum;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

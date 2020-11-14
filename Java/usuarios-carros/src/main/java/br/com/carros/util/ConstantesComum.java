@@ -1,4 +1,4 @@
-package br.com.carros;
+package br.com.carros.util;
 
 public class ConstantesComum {
 	
@@ -19,5 +19,7 @@ public class ConstantesComum {
 	public static final Integer ERROR_CODE_CAMPOS_INVALIDOS_1 = 8;
 	
 	public static final Integer ERROR_CODE_CAMPOS_INVALIDOS_2 = 9;
+	
+	public static final Integer ERROR_CODE_PLACA_CARRO_JA_EXISTE = 10;
 
 }

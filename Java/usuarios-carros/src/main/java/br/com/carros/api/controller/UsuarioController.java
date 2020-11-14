@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.carros.api.dto.UsuarioDTO;
+import br.com.carros.api.dto.UsuarioOutputDTO;
 import br.com.carros.api.dto.UsuarioInputDTO;
 import br.com.carros.api.dto.UsuarioInputDTOSemSenha;
 import br.com.carros.api.dto.UsuarioSenhaInput;
@@ -43,18 +43,18 @@ public class UsuarioController {
 	private UsuarioAssembler usuarioAssembler;
 	
 	@GetMapping
-	public List<UsuarioDTO> listarTodos() {
+	public List<UsuarioOutputDTO> listarTodos() {
 		return usuarioAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
 	
 	@GetMapping("/{usuarioId}")
-	public UsuarioDTO buscar(@PathVariable Long usuarioId) {
+	public UsuarioOutputDTO buscar(@PathVariable Long usuarioId) {
 		return usuarioAssembler.toModel(usuarioService.buscarOuFalhar(usuarioId));
 	}
 	
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public UsuarioDTO adicionar(@RequestBody @Valid UsuarioInputDTO usuarioInput) {
+	public UsuarioOutputDTO adicionar(@RequestBody @Valid UsuarioInputDTO usuarioInput) {
 		
 		Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
 		
@@ -63,7 +63,7 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/{usuarioId}")
-	public UsuarioDTO atualizar(@RequestBody @Valid UsuarioInputDTOSemSenha usuarioInput, @PathVariable Long usuarioId) {
+	public UsuarioOutputDTO atualizar(@RequestBody @Valid UsuarioInputDTOSemSenha usuarioInput, @PathVariable Long usuarioId) {
 		
 		Usuario usuarioAtual = usuarioService.buscarOuFalhar(usuarioId);
 		

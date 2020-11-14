@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import br.com.carros.domain.model.Usuario;
 
 @Repository
-public interface UsuarioRepository extends CustomJpaRepository<Usuario, Long>, JpaSpecificationExecutor<Usuario> {
+public interface UsuarioRepository extends CustomJpaRepository<Usuario, Long> {
 
 	Optional<Usuario> findByEmail(String email);
 	Optional<Usuario> findByLogin(String login);

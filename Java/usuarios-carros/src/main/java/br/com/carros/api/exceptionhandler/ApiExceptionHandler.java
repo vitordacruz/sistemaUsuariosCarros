@@ -24,9 +24,9 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 
-import br.com.carros.ConstantesComum;
 import br.com.carros.domain.exception.EntidadeNaoEncontradaException;
 import br.com.carros.domain.exception.NegocioException;
+import br.com.carros.util.ConstantesComum;
 
 @ControllerAdvice
 public class ApiExceptionHandler  extends ResponseEntityExceptionHandler {

@@ -25,6 +25,8 @@ import br.com.carros.assembler.UsuarioInputDisassembler;
 import br.com.carros.domain.UsuarioService;
 import br.com.carros.domain.model.Usuario;
 import br.com.carros.domain.repository.UsuarioRepository;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,12 +43,12 @@ public class UsuarioController {
 	
 	@Autowired
 	private UsuarioAssembler usuarioAssembler;
-	
+		
 	@GetMapping
 	public List<UsuarioOutputDTO> listarTodos() {
 		return usuarioAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
-	
+		
 	@GetMapping("/{usuarioId}")
 	public UsuarioOutputDTO buscar(@PathVariable Long usuarioId) {
 		return usuarioAssembler.toModel(usuarioService.buscarOuFalhar(usuarioId));
@@ -81,7 +83,7 @@ public class UsuarioController {
 	}
 	
 	@PutMapping("/{usuarioId}/senha")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.OK)
 	public void alterarSenha(@PathVariable Long usuarioId, @RequestBody @Valid UsuarioSenhaInput usuarioSenhaInput) {
 		
 		usuarioService.alterarSenha(usuarioId, usuarioSenhaInput.getSenhaAtual(), usuarioSenhaInput.getNovaSenha());

@@ -70,7 +70,7 @@ public class CarroService {
 		try {
 			carroRepository.deleteById(carroId);
 			carroRepository.flush();
-			log.info("Usuário excluido.");
+			log.info("Carro excluido.");
 		} catch (EmptyResultDataAccessException e) {
 			throw new CarroNaoEncontradoException(carroId);					
 		} catch (DataIntegrityViolationException e) {

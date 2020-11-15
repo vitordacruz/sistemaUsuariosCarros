@@ -2,6 +2,7 @@ package br.com.carros.domain;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,23 +71,44 @@ public class UsuarioService {
 		
 		if (usuario.getId() != null) {
 		
-			Optional<Usuario> usuarioAtual = usuarioRepository.buscarPorId(usuario.getId());
+			Optional<Usuario> usuarioAtual = usuarioRepository.buscarPorId(usuario.getId());			
 			
 			if(usuarioAtual.isPresent()) {
+				
+				usuarioRepository.detach(usuarioAtual.get());
+				
 				carroService.excluirTodos(usuarioAtual.get().getCars());
+				
+				usuario.setCreatedAt(usuarioAtual.get().getCreatedAt());
+				
 			}
+			
 		
+		} else {
+			usuario.setCreatedAt(LocalDateTime.now());
 		}
 		
 		if (usuario.getCars() != null) {
+			
+			log.debug("usuario.getCars().size(): " + usuario.getCars().size());
+			
+			var listaPlacaCarros = new ArrayList<String>();
+			
 			usuario.getCars().forEach(carro ->{
-				if (!carroService.placaExiste(carro.getLicensePlate(), usuario.getId())) {
+								
+				
+				if (!carroService.placaExiste(carro.getLicensePlate(), usuario.getId()) &&
+						!listaPlacaCarros.contains(carro.getLicensePlate())) {
+					
 					carro.setUsuario(usuario);
+					listaPlacaCarros.add(carro.getLicensePlate());
+					
 				} else {
 					log.info("Já existe um carro com essa placa");
 					throw new NegocioException(
 							messageSource.getMessage("placa.carro.ja.existe", null, null), ConstantesComum.ERROR_CODE_PLACA_CARRO_JA_EXISTE);
 				}
+				
 			});
 		}
 		

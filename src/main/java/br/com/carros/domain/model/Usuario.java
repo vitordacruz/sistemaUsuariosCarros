@@ -29,6 +29,11 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class Usuario implements UserDetails {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2630191012945094244L;
+	
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

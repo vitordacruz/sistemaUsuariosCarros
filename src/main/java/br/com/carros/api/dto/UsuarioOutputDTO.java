@@ -17,7 +17,7 @@ public class UsuarioOutputDTO {
 	private LocalDate birthday;
 	private String login;
 	private String phone;
-	private String  password;
+//	private String  password;
 	private List<CarroOutputDTO> cars;
 
 }

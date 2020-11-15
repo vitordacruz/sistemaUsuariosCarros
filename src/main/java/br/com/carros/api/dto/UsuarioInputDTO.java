@@ -1,6 +1,7 @@
 package br.com.carros.api.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import br.com.carros.domain.model.Carro;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,4 +33,6 @@ public class UsuarioInputDTO {
 	private String password;
 	@NotBlank
 	private String phone;
+	
+	private List<Carro> cars;
 }

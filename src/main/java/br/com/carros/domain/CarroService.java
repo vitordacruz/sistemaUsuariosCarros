@@ -10,10 +10,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.carros.domain.exception.CarroDoUsuarioNaoEncontradoException;
+import br.com.carros.domain.exception.CarroNaoEncontradoException;
 import br.com.carros.domain.exception.EntidadeEmUsoException;
 import br.com.carros.domain.exception.NegocioException;
-import br.com.carros.domain.exception.UsuarioNaoEncontradoException;
 import br.com.carros.domain.model.Carro;
+import br.com.carros.domain.model.Usuario;
 import br.com.carros.domain.repository.CarroRepository;
 import br.com.carros.util.ConstantesComum;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +34,6 @@ public class CarroService {
 	
 	@Transactional
 	public Carro salvar(Carro carro) {
-		
-		carroRepository.detach(carro);
 		
 		Optional<Carro> carroExistente = carroRepository.findByLicensePlate(carro.getLicensePlate());
 		
@@ -54,14 +54,14 @@ public class CarroService {
 	public Carro buscarOuFalhar(Long carroId) {
 		
 		return carroRepository.findById(carroId).orElseThrow(
-				() -> new UsuarioNaoEncontradoException(carroId));
+				() -> new CarroNaoEncontradoException(carroId));
 		
 	}
 	
 	public Carro buscarOuFalhar(Long carroId, String login) {
 		
 		return carroRepository.findOneByIdAndUsuarioLogin(carroId, login).orElseThrow(
-				() -> new UsuarioNaoEncontradoException(carroId));
+				() -> new CarroDoUsuarioNaoEncontradoException(carroId));
 		
 	}
 	
@@ -72,7 +72,27 @@ public class CarroService {
 			carroRepository.flush();
 			log.info("Usuário excluido.");
 		} catch (EmptyResultDataAccessException e) {
-			throw new UsuarioNaoEncontradoException(carroId);					
+			throw new CarroNaoEncontradoException(carroId);					
+		} catch (DataIntegrityViolationException e) {
+			throw new EntidadeEmUsoException(
+						String.format(MSG_CARRO_EM_USO, carroId));
+		}
+	}
+	
+	@Transactional
+	public void excluir(Long carroId, Usuario usuario) {
+		try {
+			
+			Carro carro = null;
+
+			carro = buscarOuFalhar(carroId, usuario.getLogin());
+			
+			carroRepository.deleteById(carro.getId());
+			carroRepository.flush();
+			log.info("Carro excluido.");
+		
+		} catch (EmptyResultDataAccessException e) {
+			throw new CarroNaoEncontradoException(carroId);					
 		} catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
 						String.format(MSG_CARRO_EM_USO, carroId));
@@ -81,6 +101,15 @@ public class CarroService {
 	
 	public List<Carro> findAllByUsuarioLogin(String login) {
 		return carroRepository.findAllByUsuarioLogin(login);
+	}
+	
+	@Transactional
+	public void excluirTodos(List<Carro> carros) {
+		
+		carros.stream().forEach(carro -> {
+			excluir(carro.getId());
+		});
+		
 	}
 	
 }

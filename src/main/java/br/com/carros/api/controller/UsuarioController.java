@@ -65,11 +65,11 @@ public class UsuarioController {
 	@PutMapping("/{usuarioId}")
 	public UsuarioOutputDTO atualizar(@RequestBody @Valid UsuarioInputDTO usuarioInput, @PathVariable Long usuarioId) {
 		
-		Usuario usuarioAtual = usuarioService.buscarOuFalhar(usuarioId);
+		Usuario usuario = usuarioInputDisassembler.toDomainObject(usuarioInput);
 		
-		usuarioInputDisassembler.copyToDomainObject(usuarioInput, usuarioAtual);
+		usuario.setId(usuarioId);
 		
-		return usuarioAssembler.toModel(usuarioService.salvar(usuarioAtual));
+		return usuarioAssembler.toModel(usuarioService.salvar(usuario));
 		
 		
 	}

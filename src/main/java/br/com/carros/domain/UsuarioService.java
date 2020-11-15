@@ -1,5 +1,6 @@
 package br.com.carros.domain;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -51,8 +52,6 @@ public class UsuarioService {
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
 		
-		usuarioRepository.detach(usuario);
-		
 		Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(usuario.getEmail());
 		
 		if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) {
@@ -67,6 +66,16 @@ public class UsuarioService {
 			log.info("Usuário tentou salvar um usuário com login já existente.");
 			throw new NegocioException(
 					messageSource.getMessage("login.ja.existe", null, null), ConstantesComum.ERROR_CODE_LOGIN_JA_EXISTENTE);
+		}
+		
+		if (usuario.getId() != null) {
+		
+			Optional<Usuario> usuarioAtual = usuarioRepository.buscarPorId(usuario.getId());
+			
+			if(usuarioAtual.isPresent()) {
+				carroService.excluirTodos(usuarioAtual.get().getCars());
+			}
+		
 		}
 		
 		if (usuario.getCars() != null) {
@@ -172,6 +181,10 @@ public class UsuarioService {
 	
 	public Usuario findByLogin(String login) {
 		return usuarioRepository.findByLogin(login).orElse(null);
+	}
+	
+	public Usuario findBySession(Principal principal) {
+		return findByLogin(principal.getName());
 	}
 	
 }

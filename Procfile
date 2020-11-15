@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/api-usuarios-carros*.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/usuarios-carros*.jar

@@ -36,6 +36,8 @@ public class UsuarioDTO {
 
 	private LocalDateTime lastLogin;
 	
+	private LocalDateTime createdAt;
+	
 	private Set<CarroOutputDTO> cars;
 
 }

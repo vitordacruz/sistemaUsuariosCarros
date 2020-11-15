@@ -17,6 +17,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -46,6 +47,8 @@ public class Usuario implements UserDetails {
 	private String password;
 	@NotBlank
 	private String phone;
+	@CreatedDate
+	private LocalDateTime createdAt;
 	
 	private LocalDateTime lastLogin;
 	

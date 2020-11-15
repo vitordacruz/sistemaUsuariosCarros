@@ -50,6 +50,13 @@ Exemplo de JSON para o cadastro de Carros:
     "color": "Teste"
 }
 ```
+#### Critérios de aceitação:
+- É preciso estar cadastrado previamente
+- A rota para a consulta de carros deve ser a `api/cars`
+- A rota para a consulta de um único carro deve ser a `api/cars{id}`
+- A rota para a remoção de um carro deve ser a `api/cars{id}`
+- A rota para a atualização de um carro deve ser a `api/cars{id}`
+- A rota para o upload de um carro deve ser a `api/cars/upload/{id}`
 
 ## # 3. Retornar minhas informações cadastrais
 Eu como usuário logado, quero que o sistema exiba minhas informações cadastrais como: nome, sobrenome, email, data de nascimento, login, telefone e carros, além disso deve exibir a data de criação do meu usuário e meu último login.  
